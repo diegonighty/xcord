@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { connect } from "@/app/lib/mongo";
-import { IPost, Post } from "@/app/lib/models";
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "../../auth/[...nextauth]/route";
-import { NextApiRequest, NextApiResponse } from "next";
+import { Post } from "@/app/lib/models";
 
 export async function POST(req: any, res: any) {
     try {
