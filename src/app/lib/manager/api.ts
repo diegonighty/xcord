@@ -1,1 +1,1 @@
-export const API_URL = process.env.API
+export const API_URL = "https://xcord.vercel.app/"
