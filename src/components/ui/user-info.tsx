@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { UrlAvatar } from "./avatar";
 import { formatDate } from "@/app/lib/utils";
 import { useEffect, useState } from "react";
+import { redirect } from "next/navigation";
 
 export function UserInfo() {
     const { data: session, update } = useSession();
@@ -17,6 +18,11 @@ export function UserInfo() {
             setAvatarUrl(session.dbUser.avatarUrl)
         }
     }, [session])
+
+    if (!session) {
+        redirect("/")
+        return;
+    }
 
     const date = formatDate(session?.dbUser.createdAt);
 
