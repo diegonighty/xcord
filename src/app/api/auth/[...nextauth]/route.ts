@@ -8,10 +8,24 @@ import { NextAuthOptions } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, trigger, session, user }) {
+      if (trigger === "update") {
+        if (!session.avatarUrl) {
+          return Promise.resolve(token);
+        }
+
+        const user = token.user as IUser
+        user.avatarUrl = session.avatarUrl
+        console.log("User updated " + user.email);
+        console.log("Avatar updated " + user.avatarUrl);
+        return Promise.resolve(token);
+      } 
+
       if (user) {
+        console.log("User log in " + user.email);
         token.user = user
       }
+
       return Promise.resolve(token);
     },
     session: async ({ session, token }) => {

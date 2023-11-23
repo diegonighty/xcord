@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, FormEventHandler, useState } from "react";
 import { useRouter } from "next/navigation";
+import { register } from "@/app/lib/manager/user.manager";
 
 export function RegisterForm() {
     const [name, setName] = useState("")
@@ -22,43 +23,12 @@ export function RegisterForm() {
         }
 
         try {
-            const user = await fetch("/api/find", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email
-                })
-            })
-
-            if (user.ok) {
-                setError("Ese correo ya tiene una cuenta registrada!")
-                return
-            }
-
-            const response = await fetch("/api/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                    avatarUrl
-                })
-            })
-
-            if (response.ok) {
+            const error = await register({ name, email, password, avatarUrl })
+            if (!error) {
               router.push("/")
-              return
             } else {
-              const error = await response.json()
-              setError(error.error)
-              return
+              setError(error)
             }
-
         } catch (error) {
             setError("Ha ocurrido un error.")
             console.error(error)

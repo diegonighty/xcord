@@ -1,7 +1,7 @@
 import mongoose, { Schema, Types, models } from "mongoose";
 
 export interface IUser {
-    id: Types.ObjectId;
+    _id: Types.ObjectId;
     name: string;
     email: string;
     password: string;
@@ -10,15 +10,14 @@ export interface IUser {
 }
 
 export interface IPost {
-    id: Types.ObjectId;
-    title: string;
+    _id: Types.ObjectId;
     content: string;
     createdAt: Date;
     userId: Types.ObjectId;
 }
 
 export interface IComment {
-    id: Types.ObjectId;
+    _id: Types.ObjectId;
     content: string;
     createdAt: Date;
     userId: Types.ObjectId;
@@ -36,7 +35,6 @@ const userSchema = new Schema<IUser>({
 });
 
 const postSchema = new Schema<IPost>({
-    title: { type: String, required: true },
     content: { type: String, required: true },
     createdAt: { type: Date, required: true },
     userId: { type: Schema.Types.ObjectId, required: true },

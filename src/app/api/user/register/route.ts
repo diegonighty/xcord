@@ -7,8 +7,8 @@ export async function POST(req: NextRequest) {
     try {
         const { name, email, password, avatarUrl}: IUser = await req.json();
         const hashedPassword = await bcrypt.hash(password, 10);
-        if (!avatarUrl || !avatarUrl.startsWith("https://i.imgur.com/")) {
-            return NextResponse.json({ error: "Avatar de Usuario Invalido" }, { status: 400 });
+        if (!avatarUrl || !avatarUrl.match(/(https:\/\/)([^\s(["<,>/]*)(\/)[^\s[",><]*(.png|.jpg|.gif)(\?[^\s[",><]*)?/)) {
+            return NextResponse.json({ error: "Sólo se permiten imagenes (.png, .jpg y .gif)" }, { status: 400 });
         }
 
         await connect();

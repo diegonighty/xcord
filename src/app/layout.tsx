@@ -20,12 +20,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased bg-[#111827] text-white`}>
       <AuthProvider>
-        <header className='py-10'>
-          <NavBar />
-        </header>
-        <main className='flex justify-center items-center'>
-          {children}
-        </main>
+          <header className='py-10'>
+            <NavBar />
+          </header>
+          <main>
+            {children}
+          </main>
         <footer className={'pt-10 flex justify-center items-center'}>
           when impostor is sus ඞ
         </footer>

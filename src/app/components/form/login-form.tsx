@@ -2,27 +2,21 @@
 
 import Link from "next/link";
 import { FormEvent, FormEventHandler, useState } from "react";
-import { signIn } from "next-auth/react";
+import { logIn } from "@/app/lib/manager/user.manager";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
   const router = useRouter();
 
   const handleSubmit: FormEventHandler<HTMLFormElement> | undefined = async (event: FormEvent) => {
     event.preventDefault();
 
     try {
-      const res = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (res?.error) {
+      const error = await logIn({ email, password })
+      if (error) {
         setError("Credenciales incorrectas.");
         return;
       }
