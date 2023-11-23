@@ -1,5 +1,4 @@
 "use client"
-
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { UrlAvatar } from "./avatar";

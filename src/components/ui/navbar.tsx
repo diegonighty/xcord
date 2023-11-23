@@ -1,19 +1,15 @@
 'use client'
-
 import Link from "next/link"
-import { signOut, useSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { Avatar } from "./avatar"
 import { VscAccount } from "react-icons/vsc";
 import { FiHome } from "react-icons/fi";
 import { IconContext } from "react-icons";
 import { IoSettingsOutline } from "react-icons/io5";
 
-
-
 const links = [
-   {name: "Inicio", href: "/", icon: FiHome},
-   {name: "Perfil", href: "/pages/me", icon: VscAccount},
-   {name: "Ajustes", href: "/pages/settings", icon: IoSettingsOutline},
+   {name: "Inicio", href: "/timeline", icon: FiHome},
+   {name: "Ajustes", href: "/settings", icon: IoSettingsOutline},
 ]
 
 export function NavBar() {
@@ -51,7 +47,7 @@ export function UserNav() {
   if (!session) return (<></>)
 
   return (
-    <Link href={"/pages/settings"} className="grid grid-cols-2">
+    <Link href={"/settings"} className="grid grid-cols-2">
       <Avatar width={32} height={32} user={session.dbUser} alt="user photo" classNames="rounded-full w-10 h-10 mx-auto"/>
       <p className="flex items-center justify-center font-bold">{session.dbUser.name}</p>
     </Link>

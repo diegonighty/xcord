@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { FormEvent, FormEventHandler, useState } from "react";
 import { logIn } from "@/app/lib/manager/user.manager";
@@ -21,7 +20,7 @@ export default function LoginForm() {
         return;
       }
 
-      router.replace("/feed");
+      router.push("/timeline");
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +52,7 @@ export default function LoginForm() {
           )}
 
           <p className="text-sm mt-3 text-right">
-            ¿No tienes cuenta?, <Link href={"/pages/register"}><span className="underline">¡Crea una!</span></Link>
+            ¿No tienes cuenta?, <Link href={"/register"}><span className="underline">¡Crea una!</span></Link>
           </p>
         </form>
       </div>

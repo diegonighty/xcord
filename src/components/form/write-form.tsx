@@ -4,11 +4,13 @@ import { Avatar } from "../ui/avatar";
 import { useState } from "react";
 import { LuSendHorizonal } from "react-icons/lu";
 import { createPost } from "@/app/lib/manager/post.manager";
+import { useRouter } from "next/navigation";
 
 export function ComposeTweet() {
     const { data: session } = useSession();
     const [buttonEnabled, setButtonEnabled] = useState(false)
     const [content, setContent] = useState("")
+    const router = useRouter()
 
     if (!session) {
         return <></>
@@ -17,10 +19,12 @@ export function ComposeTweet() {
     const handleSubmit = async (event: any) => {
         event.preventDefault()
         
-        const error = createPost({ content })
+        const error = await createPost({ content })
         if (error) {
             alert(error) //todo: replace with a toast xD
         }
+
+        window.location.reload() // no hacer esto lollllll !!!
     }
 
     const handleChange = (event: any) => {
@@ -41,7 +45,7 @@ export function ComposeTweet() {
                     onChange={handleChange}
                     name="compose"
                     id="compose-tweet"
-                    placeholder="Escribiendo algo... ✍️🤓"
+                    placeholder="Escribe algo... ✍️🤓"
                     className="h-full w-full resize-none text-xl p-4 border-none bg-gray-800 outline-none scrollbar-thumb-sky-500 scrollbar-track-text-sky-700"
                 />
             </form>
