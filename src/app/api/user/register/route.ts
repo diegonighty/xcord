@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     try {
         const { name, email, password, avatarUrl}: IUser = await req.json();
         const hashedPassword = await bcrypt.hash(password, 10);
-        if (!avatarUrl || !avatarUrl.match(/(https:\/\/)([^\s(["<,>/]*)(\/)[^\s[",><]*(.png|.jpg|.gif)(\?[^\s[",><]*)?/)) {
+        if (avatarUrl && !avatarUrl.match(/(https:\/\/)([^\s(["<,>/]*)(\/)[^\s[",><]*(.png|.jpg|.gif)(\?[^\s[",><]*)?/)) {
             return NextResponse.json({ error: "Sólo se permiten imagenes (.png, .jpg y .gif)" }, { status: 400 });
         }
 
