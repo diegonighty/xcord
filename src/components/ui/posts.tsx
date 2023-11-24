@@ -7,6 +7,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Types } from "mongoose";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { formatDate } from "@/app/lib/utils";
 
 export function Post({ post }: { post: IPost }) {
     const [author, setAuthor] = useState<IUser | undefined>(undefined);
@@ -21,11 +22,13 @@ export function Post({ post }: { post: IPost }) {
         return <></>
     }
 
+    const submitDate = formatDate(post.createdAt);
+
     return (
         <section className="grid grid-rows-2 bg-gray-800 border-2 border-dashed rounded-lg border-gray-700">
                 <div className="grid grid-cols-2 justify-center items-center font-bold">
                     <Avatar user={author} width={64} height={64} alt="user photo" classNames="pt-4 pl-3 rounded w-25"/>
-                    <h1 className="w-75">{author.name}</h1>
+                    <h1 className="w-75">{author.name} - {submitDate}</h1>
                 </div>
                 <textarea 
                     readOnly
