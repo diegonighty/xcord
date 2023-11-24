@@ -1,22 +1,11 @@
 "use client"
-import { IPost } from '../lib/models'
 import { ComposeTweet } from '@/components/form/write-form'
-import { getPosts } from '../lib/manager/post.manager'
-import { Posts } from '@/components/ui/posts';
-import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
+import { InfiniteScrollPosts } from '@/components/ui/posts';
 
 export default function Page() {
-    const [posts, setPosts] = useState<IPost[] | undefined>(undefined);
     const { data: session } = useSession();
-
-    useEffect(() => {
-        (async () => {
-            const posts: IPost[] | undefined = await getPosts({});
-            setPosts(posts);
-        })();
-    }, []);
 
     if (!session) {
         redirect("/")
@@ -30,7 +19,7 @@ export default function Page() {
                 </section>
 
                 <section className=''>
-                    {posts && <Posts posts={posts} />}
+                    <InfiniteScrollPosts />
                 </section>
             </section>
         </section>

@@ -4,18 +4,26 @@ import { Post } from "@/app/lib/models";
 
 export async function POST(req: any, res: any) {
     try {
-        const { userId } = await req.json();
+        const { userId, page } = await req.json();
         let posts;
 
         await connect();
         
+        let query;
         if (!userId) {
-            posts = await Post.find({}).sort({ createdAt: -1 });    
+            query = Post.find({})
         } else {
-            posts = await Post.find({ userId }).sort({ createdAt: -1 });
+            query = Post.find({ userId })
         }
 
-        console.log("Posts retrieved " + JSON.stringify(posts));
+        posts = query.sort({ createdAt: -1 });
+
+        if (page) {
+            query = query.skip(page === 1 ? 0 : page * 10).limit(10)
+        }
+
+        posts = await query;
+
         return NextResponse.json(JSON.stringify(posts), { status: 200 });
     } catch (error) {
         console.log(error)

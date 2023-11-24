@@ -58,7 +58,7 @@ export function RegisterForm() {
          <input
             onChange={(e) => setAvatarUrl(e.target.value)}
             type="url"
-            placeholder="Avatar (imgur link) (opcional) https://i.imgur.com/KnSH06R.png"
+            placeholder="Avatar URL de imagen (JPG, GIF, PNG)"
           />
           <button className="bg-sky-500 hover:bg-sky-700 text-white font-bold cursor-pointer px-6 py-2">
             Crear cuenta

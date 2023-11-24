@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { IPost, IUser } from "../models";
 import { API_URL } from "./api";
 
@@ -17,11 +18,13 @@ export async function createPost({ content }: { content: string }): Promise<stri
     }
 }
 
-export async function getPosts({ user }: { user?: IUser }): Promise<IPost[] | undefined> {
+export async function getPosts({ user, page }: { user?: IUser | Types.ObjectId | string; page?: number }): Promise<IPost[] | undefined> {
+    const id = user === undefined ? undefined : typeof user === "string" ? user : user._id.toString();
+
     const response = await fetch(API_URL + '/api/post/get', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ userId: user?._id }),
+        body: JSON.stringify({ userId: id, page }),
     })
 
     const json = await response.json();

@@ -1,9 +1,12 @@
 "use client"
 
+import { getPosts } from "@/app/lib/manager/post.manager";
 import { findUser } from "@/app/lib/manager/user.manager";
 import { IPost, IUser } from "@/app/lib/models";
 import { Avatar } from "@/components/ui/avatar";
+import { Types } from "mongoose";
 import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export function Post({ post }: { post: IPost }) {
     const [author, setAuthor] = useState<IUser | undefined>(undefined);
@@ -15,7 +18,6 @@ export function Post({ post }: { post: IPost }) {
     }, [post.userId]);
 
     if (!author) {
-        console.error("Post author not found in database" + post.userId + ", post: " + post._id);
         return <></>
     }
 
@@ -27,8 +29,9 @@ export function Post({ post }: { post: IPost }) {
                 </div>
                 <textarea 
                     readOnly
+                    defaultValue={post.content}
                     className="w-full resize-none text-xl p-4 border-none bg-gray-800 outline-none scrollbar-thumb-sky-500 scrollbar-track-text-sky-700"
-                >{post.content}</textarea>
+                />
         </section>
     )
 }
@@ -37,8 +40,45 @@ export function Posts({ posts }: { posts: IPost[] }) {
     return (
         <section className="grid grid-rows-[200px_minmax(900px,_1fr)_100pxs gap-5">
             {posts.map((post) => 
-                <Post key={post.content} post={post} />
+                <Post key={post._id.toString()} post={post} />
             )}
         </section>
+    )
+}
+
+export function InfiniteScrollPosts({ userId }: { userId?: Types.ObjectId }) {
+    const [posts, setPosts] = useState<IPost[] | undefined>(undefined);
+    const [hasMore, setHasMore] = useState<boolean>(true);
+    const [page, setPage] = useState<number>(1);
+
+    const fetchMoreData = async () => {
+        const newPosts: IPost[] | undefined = await getPosts({ page, user: userId });
+        setPosts([...(posts || []), ...(newPosts || [])]);
+
+        if (newPosts?.length === 0) {
+            setHasMore(false);
+        }
+
+        setPage(page + 1);
+    }
+
+    useEffect(() => {
+        fetchMoreData();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+    if (!posts) {
+        return <></>
+    }
+
+    return (
+        <InfiniteScroll
+            dataLength={posts.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={<h4>Cargando...</h4>}
+        >
+            <Posts posts={posts} />
+        </InfiniteScroll>
     )
 }

@@ -11,5 +11,5 @@ export default async function Home() {
     return (<LoginForm />)
   }
 
-  redirect("/timeline")
+  return <></>
 }
